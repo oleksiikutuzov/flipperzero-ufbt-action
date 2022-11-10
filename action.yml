@@ -14,7 +14,9 @@ runs:
         path: flipperzero-ufbt
         
     - name: Set path
+      shell: bash
       run: echo "$GITHUB_WORKSPACE/flipperzero-ufbt" >> $GITHUB_PATH
       
     - name: Build fap
+      shell: bash
       run: ufbt
