@@ -1,0 +1,20 @@
+name: 'build fap'
+author: 'Oleksii Kutuzov'
+description: 'Github Action that builds your fap with ufbt'
+branding:
+  icon: 'align-left'  
+  color: 'green'
+runs:
+  using: 'composite'
+  steps:
+    - name: Checkout ufbt
+      uses: actions/checkout@v3
+      with:
+        repository: flipperdevices/flipperzero-ufbt
+        path: flipperzero-ufbt
+        
+    - name: Set path
+      run: echo "$GITHUB_WORKSPACE/flipperzero-ufbt" >> $GITHUB_PATH
+      
+    - name: Build fap
+      run: ufbt
