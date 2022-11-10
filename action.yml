@@ -11,12 +11,12 @@ runs:
       uses: actions/checkout@v3
       with:
         repository: flipperdevices/flipperzero-ufbt
-        path: flipperzero-ufbt
+        path: ../flipperzero-ufbt
         
     - name: Set path
       shell: bash
-      run: echo "$GITHUB_WORKSPACE/flipperzero-ufbt" >> $GITHUB_PATH
+      run: echo "$GITHUB_WORKSPACE/../flipperzero-ufbt" >> $GITHUB_PATH
       
     - name: Build fap
       shell: bash
-      run: ufbt
+      run: cd $GITHUB_WORKSPACE; ufbt
