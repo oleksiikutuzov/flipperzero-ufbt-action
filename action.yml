@@ -4,6 +4,10 @@ description: 'Github Action that builds your fap with ufbt'
 branding:
   icon: 'align-left'  
   color: 'green'
+inputs:
+  fap-dir:
+    description: 'Directory with your fap (you should checkout your repository to some folder'
+    required: true
 runs:
   using: 'composite'
   steps:
@@ -11,12 +15,12 @@ runs:
       uses: actions/checkout@v3
       with:
         repository: flipperdevices/flipperzero-ufbt
-        path: ../flipperzero-ufbt
+        path: flipperzero-ufbt
         
     - name: Set path
       shell: bash
-      run: echo "$GITHUB_WORKSPACE/../flipperzero-ufbt" >> $GITHUB_PATH
+      run: echo "$GITHUB_WORKSPACE/flipperzero-ufbt" >> $GITHUB_PATH
       
     - name: Build fap
       shell: bash
-      run: cd $GITHUB_WORKSPACE; ufbt
+      run: cd ${{ inputs.fap-dir }}; ufbt
