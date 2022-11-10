@@ -21,7 +21,7 @@ jobs:
         submodules: 'true'
         
     - name: Build
-      uses: oleksiikutuzov/flipperzero-ufbt-action@v0.3
+      uses: oleksiikutuzov/flipperzero-ufbt-action@v1
       with:
         fap-dir: flipperzero-lightmeter
 ```
