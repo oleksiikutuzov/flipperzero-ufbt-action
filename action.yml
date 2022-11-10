@@ -12,7 +12,6 @@ runs:
       with:
         repository: flipperdevices/flipperzero-ufbt
         path: flipperzero-ufbt
-      shell: bash
         
     - name: Set path
       shell: bash
