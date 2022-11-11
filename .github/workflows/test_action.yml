@@ -10,12 +10,8 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
 
-    - name: Extract branch name
-      shell: bash
-      run: echo "BRANCH=$(echo ${GITHUB_REF##*/})" >> $GITHUB_ENV
-
     - name: Build test fap
-      uses: oleksiikutuzov/flipperzero-ufbt-action@${{ env.BRANCH}}
+      uses: oleksiikutuzov/flipperzero-ufbt-action@${{ GITHUB_REF_NAME }}
       with:
         fap-dir: test
         channel: rc
