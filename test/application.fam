@@ -1,0 +1,17 @@
+# For details & more options, see documentation/AppManifests.md in firmware repo
+
+App(
+    appid="test_fap",  # Must be unique
+    name="App test_fap",  # Displayed in UI
+    apptype=FlipperAppType.EXTERNAL,
+    entry_point="test_fap_app",
+    stack_size=2 * 1024,
+    fap_category="Misc",
+    # Optional values
+    # fap_version=(0, 1),  # (major, minor)
+    # fap_icon="test_fap.png",  # 10x10 1-bit PNG
+    # fap_description="A simple app",
+    # fap_author="J. Doe",
+    # fap_weburl="https://github.com/user/test_fap",
+    fap_icon_assets="images",  # Image assets to compile for this application
+)
