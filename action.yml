@@ -66,3 +66,9 @@ runs:
     - name: Build fap
       shell: bash
       run: cd ${{ inputs.fap-dir }}; ufbt
+      
+    - name: Upload artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: fap
+        path: flipperzero-ufbt/.ufbt/build/*.fap
