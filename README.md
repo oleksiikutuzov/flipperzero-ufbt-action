@@ -1,5 +1,7 @@
 # flipperzero-ufbt-action
 
+[![Test action](https://github.com/oleksiikutuzov/flipperzero-ufbt-action/actions/workflows/test_action.yml/badge.svg?branch=main)](https://github.com/oleksiikutuzov/flipperzero-ufbt-action/actions/workflows/test_action.yml)
+
 ## Inputs
 
 > **Note**
