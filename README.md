@@ -24,4 +24,5 @@ jobs:
       uses: oleksiikutuzov/flipperzero-ufbt-action@v1
       with:
         fap-dir: flipperzero-lightmeter
+        channel: rc
 ```
