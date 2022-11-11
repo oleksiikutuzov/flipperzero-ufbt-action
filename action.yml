@@ -2,8 +2,8 @@ name: 'build fap'
 author: 'Oleksii Kutuzov'
 description: 'Github Action that builds your fap with ufbt'
 branding:
-  icon: 'align-left'  
-  color: 'green'
+  icon: 'cpu'  
+  color: 'orange'
 inputs:
   fap-dir:
     description: 'Directory with your fap (you should checkout your repository to some folder'
