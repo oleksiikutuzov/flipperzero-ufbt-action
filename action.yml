@@ -8,6 +8,9 @@ inputs:
   fap-dir:
     description: 'Directory with your fap (you should checkout your repository to some folder'
     required: true
+  app_id:
+    description: 'app_id of your application'
+    required: true
   channel:
     description: 'SDK channel to use'
     required: false
@@ -67,12 +70,8 @@ runs:
       shell: bash
       run: cd ${{ inputs.fap-dir }}; ufbt
       
-    - name: Get artifact name
-      shell: bash
-      run: echo "APP_FILE=$(basename $GITHUB_WORKSPACE/flipperzero-ufbt/dist/*.fap )" >> $GITHUB_ENV
-      
     - name: Upload artifact
       uses: actions/upload-artifact@v3
       with:
-        name: ${{ env.APP_FILE }}
-        path: flipperzero-ufbt/.ufbt/build/*.fap
+        name: ${{ inputs.app_id }}.fap
+        path: flipperzero-ufbt/.ufbt/build/${{ inputs.app_id }}.fap
