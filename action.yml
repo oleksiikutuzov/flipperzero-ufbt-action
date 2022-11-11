@@ -41,8 +41,6 @@ runs:
         key: ${{ runner.os }}-${{ env.cache-name }}-${{ steps.version.outputs.value }}
         restore-keys: |
           ${{ runner.os }}-${{ env.cache-name }}-${{ steps.version.outputs.value }}
-          ${{ runner.os }}-${{ env.cache-name }}-
-          ${{ runner.os }}-
       
     - name: Build fap
       shell: bash
