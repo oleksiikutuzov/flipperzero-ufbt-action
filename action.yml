@@ -43,7 +43,7 @@ runs:
       
     - name: Extract version
       shell: bash
-      run: jq -r '.channels[0].versions[0].version' directory.json; echo "COMMIT=$(jq -r '.channels[0].versions[0].version' directory.json)" >> $GITHUB_ENV; echo ${{ env.COMMIT }}
+      run: echo "COMMIT=$(jq -r '.channels[0].versions[0].version' directory.json)" >> $GITHUB_ENV
       
     - name: Extract version from package.json
       uses: sergeysova/jq-action@v2
@@ -58,9 +58,9 @@ runs:
         cache-name: cache-ufbt
       with:
         path: flipperzero-ufbt/.ufbt/
-        key: ${{ runner.os }}-${{ env.cache-name }}-${{ inputs.channel }}-${{ steps.version.outputs.value }}
+        key: ${{ runner.os }}-${{ env.cache-name }}-${{ inputs.channel }}-${{ ${{ env.COMMIT }} }}
         restore-keys: |
-          ${{ runner.os }}-${{ env.cache-name }}-${{ inputs.channel }}-${{ steps.version.outputs.value }}
+          ${{ runner.os }}-${{ env.cache-name }}-${{ inputs.channel }}-${{ ${{ env.COMMIT }} }}
           
     - if: ${{ steps.cache-fbt.outputs.cache-hit != 'true' }}
       name: Update fbt
