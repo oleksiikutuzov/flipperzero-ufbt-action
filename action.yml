@@ -8,6 +8,10 @@ inputs:
   fap-dir:
     description: 'Directory with your fap (you should checkout your repository to some folder'
     required: true
+  channel:
+    description: 'SDK channel to use'
+    required: false
+    default: 'dev'
 runs:
   using: 'composite'
   steps:
@@ -25,11 +29,23 @@ runs:
       shell: bash
       run: curl -o directory.json https://update.flipperzero.one/firmware/directory.json
       
+    - if: ${{ inputs.channel == 'dev' }}
+      env:
+        channel_n: 0
+        
+    - if: ${{ inputs.channel == 'rc' }}
+      env:
+        channel_n: 1
+        
+    - if: ${{ inputs.channel == 'release' }}
+      env:
+        channel_n: 2
+      
     - name: Extract version from package.json
       uses: sergeysova/jq-action@v2
       id: version
       with:
-        cmd: 'jq .channels[0].versions[0].version directory.json -r'
+        cmd: 'jq .channels[${{ env.channel_n }}].versions[0].version directory.json -r'
       
     - name: Cache toolchain
       id: cache-fbt
