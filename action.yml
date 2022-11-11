@@ -67,8 +67,12 @@ runs:
       shell: bash
       run: cd ${{ inputs.fap-dir }}; ufbt
       
+    - name: Get artifact name
+      shell: bash
+      run: echo "APP_FILE=$(basename $GITHUB_WORKSPACE/flipperzero-ufbt/dist/*.fap )" >> $GITHUB_ENV
+      
     - name: Upload artifact
       uses: actions/upload-artifact@v3
       with:
-        name: fap
+        name: ${{ env.APP_FILE }}
         path: flipperzero-ufbt/.ufbt/build/*.fap
