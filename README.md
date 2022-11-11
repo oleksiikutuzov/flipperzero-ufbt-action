@@ -1,8 +1,15 @@
 # flipperzero-ufbt-action
 
-## Usage example
+## Inputs
+
 > **Note**
 > You should checkout your repository to some directory, so that ufbt is not in your repo root
+
+`fap-dir` is required. Path to a folder where your repository is checked out
+
+`channel` is not required. Can be `dev`, `rc`, `release`. Default option is `dev`.
+
+## Usage example
 
 ```yml
 name: Build FAP
