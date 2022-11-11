@@ -30,33 +30,33 @@ runs:
       run: curl -o directory.json https://update.flipperzero.one/firmware/directory.json
       
     - if: ${{ inputs.channel == 'dev' }}
-      env:
-        channel_n: 0
+      shell: bash
+      run: echo "{CHANNEL}={0}" >> $GITHUB_ENV
         
     - if: ${{ inputs.channel == 'rc' }}
-      env:
-        channel_n: 1
+      shell: bash
+      run: echo "{CHANNEL}={1}" >> $GITHUB_ENV
         
     - if: ${{ inputs.channel == 'release' }}
-      env:
-        channel_n: 2
+      shell: bash
+      run: echo "{CHANNEL}={2}" >> $GITHUB_ENV
       
     - name: Extract version from package.json
       uses: sergeysova/jq-action@v2
       id: version
       with:
-        cmd: 'jq .channels[${{ env.channel_n }}].versions[0].version directory.json -r'
+        cmd: 'jq .channels[${{ env.CHANNEL }}].versions[0].version directory.json -r'
       
     - name: Cache toolchain
       id: cache-fbt
       uses: actions/cache@v3
       env:
-        cache-name: cache-fbt-toolchain
+        cache-name: cache-ufbt
       with:
         path: flipperzero-ufbt/.ufbt/
-        key: ${{ runner.os }}-${{ env.cache-name }}-${{ steps.version.outputs.value }}
+        key: ${{ runner.os }}-${{ env.cache-name }}-${{ inputs.channel }}-${{ steps.version.outputs.value }}
         restore-keys: |
-          ${{ runner.os }}-${{ env.cache-name }}-${{ steps.version.outputs.value }}
+          ${{ runner.os }}-${{ env.cache-name }}-${{ inputs.channel }}-${{ steps.version.outputs.value }}
       
     - name: Build fap
       shell: bash
