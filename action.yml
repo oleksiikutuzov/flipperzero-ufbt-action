@@ -72,7 +72,7 @@ runs:
       
     - name: Get name
       shell: bash
-      run: echo "APP_ID=$(basename dist/*.fap)" >> $GITHUB_PATH
+      run: pwd; basename dist/*.fap; echo "APP_ID=$(basename dist/*.fap)" >> $GITHUB_PATH
       
     - name: Upload artifact
       uses: actions/upload-artifact@v3
