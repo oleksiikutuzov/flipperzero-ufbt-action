@@ -45,6 +45,7 @@ runs:
           
     - if: ${{ steps.cache-fbt.outputs.cache-hit != 'true' }}
       name: Update ufbt
+      shell: bash
       continue-on-error: false
       run: ufbt update
         
