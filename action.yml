@@ -72,7 +72,11 @@ runs:
       
     - name: Get name
       shell: bash
-      run: pwd; basename ${{ inputs.fap-dir }}/dist/*.fap; echo "APP_ID=$(basename ${{ inputs.fap-dir }}/dist/*.fap)"
+      run: pwd; basename ${{ inputs.fap-dir }}/dist/*.fap; echo "APP_ID=$(basename ${{ inputs.fap-dir }}/dist/*.fap)" >> $GITHUB_ENV
+      
+    - name: Print env
+      shell: bash
+      run: echo ${{ env.APP_ID }}
       
     - name: Upload artifact
       uses: actions/upload-artifact@v3
