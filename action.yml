@@ -38,11 +38,24 @@ runs:
         cache-name: cache-ftb-toolchain
       with:
         path: "$GITHUB_WORKSPACE/flipperzero-ufbt/.ufbt/"
-        key: ${{ runner.os }}-${{ env.cache-name }}-${{ steps.version.outputs.value }}
         restore-keys: |
-          ${{ runner.os }}-${{ env.cache-name }}-${{ steps.version.outputs.value }}-
+          ${{ runner.os }}-${{ env.cache-name }}-${{ steps.version.outputs.value }}
           ${{ runner.os }}-${{ env.cache-name }}-
           ${{ runner.os }}-
+          
+    - if: ${{ steps.cache-fbt.outputs.cache-hit != 'true' }}
+      name: Update ufbt
+      continue-on-error: false
+      run: ufbt update
+        
+    - if: ${{ steps.cache-fbt.outputs.cache-hit != 'true' }}
+      name: Save cache
+      uses: actions/cache@v3
+      env:
+        cache-name: cache-ftb-toolchain
+      with:
+        path: "$GITHUB_WORKSPACE/flipperzero-ufbt/.ufbt/"
+        key: ${{ runner.os }}-${{ env.cache-name }}-${{ steps.version.outputs.value }}
       
     - name: Build fap
       shell: bash
