@@ -27,9 +27,9 @@ runs:
       
     - name: Extract version from package.json
       uses: sergeysova/jq-action@v2
-        id: version
-        with:
-          cmd: 'jq .channels[0].versions[0].version directory.jso -r'
+      id: version
+      with:
+        cmd: 'jq .channels[0].versions[0].version directory.jso -r'
       
     - name: Cache toolchain
       id: cache-fbt
