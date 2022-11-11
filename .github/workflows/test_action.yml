@@ -11,7 +11,7 @@ jobs:
       uses: actions/checkout@v3
 
     - name: Build test fap
-      uses: oleksiikutuzov/flipperzero-ufbt-action@${{ GITHUB_REF_NAME }}
+      uses: oleksiikutuzov/flipperzero-ufbt-action@${{ github.ref_name }}
       with:
         fap-dir: test
         channel: rc
