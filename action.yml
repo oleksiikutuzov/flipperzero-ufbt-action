@@ -58,9 +58,9 @@ runs:
         cache-name: cache-ufbt
       with:
         path: flipperzero-ufbt/.ufbt/
-        key: ${{ runner.os }}-${{ env.cache-name }}-${{ inputs.channel }}-${{ ${{ env.COMMIT }} }}
+        key: ${{ runner.os }}-${{ env.cache-name }}-${{ inputs.channel }}-${{ env.COMMIT }}
         restore-keys: |
-          ${{ runner.os }}-${{ env.cache-name }}-${{ inputs.channel }}-${{ ${{ env.COMMIT }} }}
+          ${{ runner.os }}-${{ env.cache-name }}-${{ inputs.channel }}-${{ env.COMMIT }}
           
     - if: ${{ steps.cache-fbt.outputs.cache-hit != 'true' }}
       name: Update fbt
