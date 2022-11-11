@@ -41,15 +41,9 @@ runs:
       shell: bash
       run: curl -o directory.json https://update.flipperzero.one/firmware/directory.json
       
-    - name: Extract version
+    - name: Extract commit id
       shell: bash
-      run: echo "COMMIT=$(jq -r '.channels[0].versions[0].version' directory.json)" >> $GITHUB_ENV
-      
-    - name: Extract version from package.json
-      uses: sergeysova/jq-action@v2
-      id: version
-      with:
-        cmd: 'jq .channels[${{ env.CHANNEL }}].versions[0].version directory.json -r'
+      run: echo "COMMIT_ID=$(jq -r '.channels[0].versions[0].version' directory.json)" >> $GITHUB_ENV
       
     - name: Cache toolchain
       id: cache-fbt
@@ -58,9 +52,9 @@ runs:
         cache-name: cache-ufbt
       with:
         path: flipperzero-ufbt/.ufbt/
-        key: ${{ runner.os }}-${{ env.cache-name }}-${{ inputs.channel }}-${{ env.COMMIT }}
+        key: ${{ runner.os }}-${{ env.cache-name }}-${{ inputs.channel }}-${{ env.COMMIT_ID }}
         restore-keys: |
-          ${{ runner.os }}-${{ env.cache-name }}-${{ inputs.channel }}-${{ env.COMMIT }}
+          ${{ runner.os }}-${{ env.cache-name }}-${{ inputs.channel }}-${{ env.COMMIT_ID }}
           
     - if: ${{ steps.cache-fbt.outputs.cache-hit != 'true' }}
       name: Update fbt
