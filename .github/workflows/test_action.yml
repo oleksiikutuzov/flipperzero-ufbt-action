@@ -12,10 +12,10 @@ jobs:
 
     - name: Extract branch name
       shell: bash
-      run: GITHUB_REF=refs/heads/feature-branch-1; echo ${GITHUB_REF##*/}
+      run: echo "BRANCH=$(echo ${GITHUB_REF##*/})" >> $GITHUB_ENV
 
     - name: Build test fap
-      uses: oleksiikutuzov/flipperzero-ufbt-action@v1
+      uses: oleksiikutuzov/flipperzero-ufbt-action@${{ env.BRANCH}}
       with:
         fap-dir: test
         channel: rc
