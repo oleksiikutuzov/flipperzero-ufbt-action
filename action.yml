@@ -25,10 +25,6 @@ runs:
       shell: bash
       run: echo "$GITHUB_WORKSPACE/flipperzero-ufbt" >> $GITHUB_PATH
       
-    - name: Get directory.json
-      shell: bash
-      run: curl -o directory.json https://update.flipperzero.one/firmware/directory.json
-      
     - if: ${{ inputs.channel == 'dev' }}
       shell: bash
       run: echo "{CHANNEL}={0}" >> $GITHUB_ENV
@@ -40,6 +36,14 @@ runs:
     - if: ${{ inputs.channel == 'release' }}
       shell: bash
       run: echo "{CHANNEL}={2}" >> $GITHUB_ENV
+      
+    - name: Get directory.json
+      shell: bash
+      run: curl -o directory.json https://update.flipperzero.one/firmware/directory.json
+      
+    - name: Extract version
+      shell: bash
+      run: echo "COMMIT=$(jq -r '.channels[0].versions[0].version' directory.json)" >> $GITHUB_ENV; echo $COMMIT
       
     - name: Extract version from package.json
       uses: sergeysova/jq-action@v2
