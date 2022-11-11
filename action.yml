@@ -69,10 +69,10 @@ runs:
       
     - name: Get name
       shell: bash
-      run: echo "APP_ID=$(basename ${{ inputs.fap-dir }}/dist/*.fap)" >> $GITHUB_ENV
+      run: echo "ARTIFACT=$(basename ${{ inputs.fap-dir }}/dist/*.fap)" >> $GITHUB_ENV
       
     - name: Upload artifact
       uses: actions/upload-artifact@v3
       with:
-        name: ${{ env.APP_ID }}
-        path: flipperzero-ufbt/.ufbt/build/${{ env.APP_ID }}
+        name: ${{ env.ARTIFACT }}
+        path: flipperzero-ufbt/.ufbt/build/${{ env.ARTIFACT }}
