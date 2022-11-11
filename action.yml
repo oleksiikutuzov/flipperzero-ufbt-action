@@ -21,6 +21,22 @@ runs:
       shell: bash
       run: echo "$GITHUB_WORKSPACE/flipperzero-ufbt" >> $GITHUB_PATH
       
+    - name: Check version
+      shell: bash
+      run: apt install jq; ENVIRONMENT="$(jq -r '.channels[0].versions[0].version' "directory.json")"
+      
+    - name: Cache toolchain
+        id: cache-fbt
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-ftb-toolchain
+        with:
+          # npm cache files are stored in `~/.npm` on Linux/macOS
+          path: "$GITHUB_WORKSPACE/flipperzero-ufbt/.ufbt/"
+          key: ${{ runner.os }}-toolchain-${{ env.cache-name }}-${{ env.ENVIRONMENT }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.ENVIRONMENT }}-
+      
     - name: Build fap
       shell: bash
       run: cd ${{ inputs.fap-dir }}; ufbt
