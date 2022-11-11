@@ -29,7 +29,7 @@ runs:
       uses: sergeysova/jq-action@v2
       id: version
       with:
-        cmd: 'jq .channels[0].versions[0].version directory.jso -r'
+        cmd: 'jq .channels[0].versions[0].version directory.json -r'
       
     - name: Cache toolchain
       id: cache-fbt
