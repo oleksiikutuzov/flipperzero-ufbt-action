@@ -6,10 +6,19 @@
 
 > **Note**
 > You should checkout your repository to some directory, so that ufbt is not in your repo root
+> ```
+> ── runner_home
+>   ├── fap-dir
+>   └── flipperzero-ufbt
+> ```
 
 `fap-dir` is required. Path to a folder where your repository is checked out
 
 `channel` is not required. Can be `dev`, `rc`, `release`. Default option is `dev`.
+
+## Caching
+
+This workflow will save ufbt cache for your repository as you run it and automatically update it as needed. [More about managing caches](https://docs.github.com/en/actions/using-workflows/caching-dependencies-to-speed-up-workflows#managing-caches)
 
 ## Usage example
 
