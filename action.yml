@@ -57,6 +57,11 @@ runs:
         key: ${{ runner.os }}-${{ env.cache-name }}-${{ inputs.channel }}-${{ steps.version.outputs.value }}
         restore-keys: |
           ${{ runner.os }}-${{ env.cache-name }}-${{ inputs.channel }}-${{ steps.version.outputs.value }}
+          
+    - if: ${{ steps.cache-fbt.outputs.cache-hit != 'true' }}
+      name: Update fbt
+      shell: bash
+      run: ufbt update --channel=${{ inputs.channel }}
       
     - name: Build fap
       shell: bash
