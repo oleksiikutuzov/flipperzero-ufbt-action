@@ -1,4 +1,4 @@
-name: 'build fap'
+name: 'Build Flipper Application Package'
 author: 'Oleksii Kutuzov'
 description: 'Github Action that builds your fap with ufbt'
 branding:
