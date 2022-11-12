@@ -6,8 +6,9 @@ branding:
   color: "orange"
 inputs:
   path:
-    description: "Path to your fap source code (you should checkout your repository to some folder)"
-    required: true
+    description: "Path to fap source code (if not in the root of repository)"
+    required: false
+    default: ""
   lint_only:
     description: "Whether you want to build or lint your source code"
     required: false
@@ -19,27 +20,35 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Checkout ufbt
-      uses: actions/checkout@v3
-      with:
-        repository: flipperdevices/flipperzero-ufbt
-        path: flipperzero-ufbt
-
-    - name: Set path
+    - if: ${{ inputs.path == '' }}
+      name: Set fap path to workspace
       shell: bash
-      run: echo "$GITHUB_WORKSPACE/flipperzero-ufbt" >> $GITHUB_PATH
+      run: echo "FAP_PATH=$GITHUB_WORKSPACE" >> $GITHUB_ENV
+
+    - if: ${{ inputs.path != '' }}
+      name: Set fap path to fap directory
+      shell: bash
+      run: echo "FAP_PATH=$GITHUB_WORKSPACE/${{ inputs.path }}" >> $GITHUB_ENV
+
+    - name: Clone ufbt
+      shell: bash
+      run: git clone https://github.com/flipperdevices/flipperzero-ufbt ${{ runner.temp }}/flipperzero-ufbt
+
+    - name: Set ufbt path
+      shell: bash
+      run: echo "${{ runner.temp }}/flipperzero-ufbt" >> $GITHUB_PATH
 
     - if: ${{ inputs.channel == 'dev' }}
       shell: bash
-      run: echo "{CHANNEL}={0}" >> $GITHUB_ENV
+      run: echo "CHANNEL=0" >> $GITHUB_ENV
 
     - if: ${{ inputs.channel == 'rc' }}
       shell: bash
-      run: echo "{CHANNEL}={1}" >> $GITHUB_ENV
+      run: echo "CHANNEL=1" >> $GITHUB_ENV
 
     - if: ${{ inputs.channel == 'release' }}
       shell: bash
-      run: echo "{CHANNEL}={2}" >> $GITHUB_ENV
+      run: echo "CHANNEL=2" >> $GITHUB_ENV
 
     - name: Get directory.json
       shell: bash
@@ -55,7 +64,7 @@ runs:
       env:
         cache-name: cache-ufbt
       with:
-        path: flipperzero-ufbt/.ufbt/
+        path: ${{ runner.temp }}/flipperzero-ufbt/.ufbt/
         key: ${{ runner.os }}-${{ env.cache-name }}-${{ inputs.channel }}-${{ env.COMMIT_ID }}
         restore-keys: |
           ${{ runner.os }}-${{ env.cache-name }}-${{ inputs.channel }}-${{ env.COMMIT_ID }}
@@ -65,24 +74,24 @@ runs:
       shell: bash
       run: ufbt update --channel=${{ inputs.channel }}
 
-    - if: ${{ inputs.lint == 'true' }}
+    - if: ${{ inputs.lint_only == 'true' }}
+      name: Lint fap
+      shell: bash
+      run: cd ${{ env.FAP_PATH }}; ufbt lint
+
+    - if: ${{ inputs.lint_only == 'false' }}
       name: Build fap
       shell: bash
-      run: cd ${{ inputs.fap-dir }}; ufbt lint
+      run: cd ${{ env.FAP_PATH }}; ufbt
 
-    - if: ${{ inputs.lint == 'false' }}
-      name: Build fap
-      shell: bash
-      run: cd ${{ inputs.fap-dir }}; ufbt
-
-    - if: ${{ inputs.lint == 'false' }}
+    - if: ${{ inputs.lint_only == 'false' }}
       name: Get name
       shell: bash
-      run: echo "ARTIFACT=$(basename ${{ inputs.fap-dir }}/dist/*.fap)" >> $GITHUB_ENV
+      run: echo "ARTIFACT=$(basename ${{ env.FAP_PATH }}/dist/*.fap)" >> $GITHUB_ENV
 
-    - if: ${{ inputs.lint == 'false' }}
+    - if: ${{ inputs.lint_only == 'false' }}
       name: Upload artifact
       uses: actions/upload-artifact@v3
       with:
         name: ${{ env.ARTIFACT }}
-        path: flipperzero-ufbt/.ufbt/build/${{ env.ARTIFACT }}
+        path: ${{ env.FAP_PATH }}/dist/${{ env.ARTIFACT }}
