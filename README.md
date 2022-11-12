@@ -14,7 +14,7 @@
 
 ### `fap-dir` 
 
-Is **required**. Sets the path to a folder where your repository is checked out.
+Is **required**. Sets the path to a folder where your fap source code is located.
 
 ### `channel` 
 
