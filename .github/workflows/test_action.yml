@@ -10,24 +10,24 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v3
 
-    - name: Build test fap
-      uses: oleksiikutuzov/flipperzero-ufbt-action@main
-      with:
-        fap-dir: test
-        channel: rc
-        
+      - name: Build test fap
+        uses: oleksiikutuzov/flipperzero-ufbt-action@main
+        with:
+          path: test
+          channel: rc
+
   lint_dev:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v3
 
-    - name: Build test fap
-      uses: oleksiikutuzov/flipperzero-ufbt-action@main
-      with:
-        fap-dir: test
-        lint: true
+      - name: Build test fap
+        uses: oleksiikutuzov/flipperzero-ufbt-action@main
+        with:
+          path: test
+          lint_only: true

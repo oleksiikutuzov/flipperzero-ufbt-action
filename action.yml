@@ -1,54 +1,54 @@
-name: 'Build Flipper Application Package'
-author: 'Oleksii Kutuzov'
-description: 'Github Action that builds your fap with ufbt'
+name: "Build Flipper Application Package"
+author: "Oleksii Kutuzov"
+description: "Github Action that builds your fap with ufbt"
 branding:
-  icon: 'cpu'  
-  color: 'orange'
+  icon: "cpu"
+  color: "orange"
 inputs:
-  fap-dir:
-    description: 'Directory with your fap (you should checkout your repository to some folder'
+  path:
+    description: "Path to your fap source code (you should checkout your repository to some folder)"
     required: true
-  lint:
-    description: 'Whether you want to build or lint your source code'
+  lint_only:
+    description: "Whether you want to build or lint your source code"
     required: false
-    default: 'false'
+    default: "false"
   channel:
-    description: 'SDK channel to use'
+    description: "SDK channel to use"
     required: false
-    default: 'dev'
+    default: "dev"
 runs:
-  using: 'composite'
+  using: "composite"
   steps:
     - name: Checkout ufbt
       uses: actions/checkout@v3
       with:
         repository: flipperdevices/flipperzero-ufbt
         path: flipperzero-ufbt
-        
+
     - name: Set path
       shell: bash
       run: echo "$GITHUB_WORKSPACE/flipperzero-ufbt" >> $GITHUB_PATH
-      
+
     - if: ${{ inputs.channel == 'dev' }}
       shell: bash
       run: echo "{CHANNEL}={0}" >> $GITHUB_ENV
-        
+
     - if: ${{ inputs.channel == 'rc' }}
       shell: bash
       run: echo "{CHANNEL}={1}" >> $GITHUB_ENV
-        
+
     - if: ${{ inputs.channel == 'release' }}
       shell: bash
       run: echo "{CHANNEL}={2}" >> $GITHUB_ENV
-      
+
     - name: Get directory.json
       shell: bash
       run: curl -o directory.json https://update.flipperzero.one/firmware/directory.json
-      
+
     - name: Extract commit id
       shell: bash
       run: echo "COMMIT_ID=$(jq -r '.channels[0].versions[0].version' directory.json)" >> $GITHUB_ENV
-      
+
     - name: Cache toolchain
       id: cache-fbt
       uses: actions/cache@v3
@@ -59,27 +59,27 @@ runs:
         key: ${{ runner.os }}-${{ env.cache-name }}-${{ inputs.channel }}-${{ env.COMMIT_ID }}
         restore-keys: |
           ${{ runner.os }}-${{ env.cache-name }}-${{ inputs.channel }}-${{ env.COMMIT_ID }}
-          
+
     - if: ${{ steps.cache-fbt.outputs.cache-hit != 'true' }}
       name: Update fbt
       shell: bash
       run: ufbt update --channel=${{ inputs.channel }}
-      
+
     - if: ${{ inputs.lint == 'true' }}
       name: Build fap
       shell: bash
       run: cd ${{ inputs.fap-dir }}; ufbt lint
-      
+
     - if: ${{ inputs.lint == 'false' }}
       name: Build fap
       shell: bash
       run: cd ${{ inputs.fap-dir }}; ufbt
-      
+
     - if: ${{ inputs.lint == 'false' }}
       name: Get name
       shell: bash
       run: echo "ARTIFACT=$(basename ${{ inputs.fap-dir }}/dist/*.fap)" >> $GITHUB_ENV
-      
+
     - if: ${{ inputs.lint == 'false' }}
       name: Upload artifact
       uses: actions/upload-artifact@v3
