@@ -4,25 +4,17 @@
 
 ## Inputs
 
-> **Note**
-> You should checkout your repository to some directory, so that ufbt is not in your repo root
-> ```
-> ── runner_home
->    ├── path
->    └── flipperzero-ufbt
-> ```
+### `path`
 
-### `path` 
+Is **not required**. Sets the path to a folder where your fap source code is located if it is not in repository root.
 
-Is **required**. Sets the path to a folder where your fap source code is located.
-
-### `channel` 
+### `channel`
 
 Is **not required**. Sets a channel, from which SDK should be pulled. Can be `dev`, `rc`, `release`. When not specified, defaults to `dev`.
 
-### `lint_only` 
+### `lint_only`
 
-Is **not required**. Will lint your code instead of building. Can be `true` or `false`. When not specified, defaults to `false`.
+Is **not required**. Will only lint your code without building. Can be `true` or `false`. When not specified, defaults to `false`.
 
 ## Caching
 
@@ -44,42 +36,38 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v3
-      with:
-        path: flipperzero-lightmeter
-        submodules: 'true'
-        
+
     - name: Build
       uses: oleksiikutuzov/flipperzero-ufbt-action@v1
       with:
-        path: flipperzero-lightmeter
         channel: rc
 ```
 
-Eample of a workflow, that will pull SDK from default `dev` channel and lint your code:
+Example of a workflow, that will pull SDK from default `dev` channel and lint your code located in `lightmeter-fap` directory:
 ```yml
 name: Lint code
 
 on: [push]
 
-jobs:        
+jobs:
    lint:
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout
       uses: actions/checkout@v3
-      with:
-        path: flipperzero-lightmeter
-        submodules: 'true'
-        
+
     - name: Lint
       uses: oleksiikutuzov/flipperzero-ufbt-action@v1
       with:
-        path: flipperzero-lightmeter
+        path: lightmeter-fap
         lint_only: true
 ```
 
 # Revision History
+### Version v1.4.2
+- Inputs naming overhaul
+
 ### Version v1.4.1
 - Inputs naming overhaul
 
@@ -90,7 +78,7 @@ jobs:
 - Do not use external action for jq
 
 ### Version v1.3.1
-- Automatically set artifact name to fap name 
+- Automatically set artifact name to fap name
 
 ### Version v1.3
 - Push artifact after successful bild
