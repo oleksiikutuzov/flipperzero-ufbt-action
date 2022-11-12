@@ -60,22 +60,22 @@ runs:
       shell: bash
       run: ufbt update --channel=${{ inputs.channel }}
 
-    - if: ${{ inputs.lint == 'true' }}
+    - if: ${{ inputs.lint_only == 'true' }}
       name: Build fap
       shell: bash
       run: cd $GITHUB_WORKSPACE; ufbt lint
 
-    - if: ${{ inputs.lint == 'false' }}
+    - if: ${{ inputs.lint_only == 'false' }}
       name: Build fap
       shell: bash
       run: cd $GITHUB_WORKSPACE; ufbt
 
-    - if: ${{ inputs.lint == 'false' }}
+    - if: ${{ inputs.lint_only == 'false' }}
       name: Get name
       shell: bash
       run: echo "ARTIFACT=$(basename dist/*.fap)" >> $GITHUB_ENV
 
-    - if: ${{ inputs.lint == 'false' }}
+    - if: ${{ inputs.lint_only == 'false' }}
       name: Upload artifact
       uses: actions/upload-artifact@v3
       with:
