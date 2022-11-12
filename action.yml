@@ -8,6 +8,10 @@ inputs:
   fap-dir:
     description: 'Directory with your fap (you should checkout your repository to some folder'
     required: true
+  lint:
+    description: 'Whether you want to build or lint your source code'
+    required: false
+    default: 'false'
   channel:
     description: 'SDK channel to use'
     required: false
@@ -61,15 +65,23 @@ runs:
       shell: bash
       run: ufbt update --channel=${{ inputs.channel }}
       
-    - name: Build fap
+    - if: ${{ inputs.lint == 'true' }}
+      name: Build fap
+      shell: bash
+      run: cd ${{ inputs.fap-dir }}; ufbt lint
+      
+    - if: ${{ inputs.lint == 'false' }}
+      name: Build fap
       shell: bash
       run: cd ${{ inputs.fap-dir }}; ufbt
       
-    - name: Get name
+    - if: ${{ inputs.lint == 'false' }}
+      name: Get name
       shell: bash
       run: echo "ARTIFACT=$(basename ${{ inputs.fap-dir }}/dist/*.fap)" >> $GITHUB_ENV
       
-    - name: Upload artifact
+    - if: ${{ inputs.lint == 'false' }}
+      name: Upload artifact
       uses: actions/upload-artifact@v3
       with:
         name: ${{ env.ARTIFACT }}
