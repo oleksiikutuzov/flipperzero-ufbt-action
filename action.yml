@@ -63,12 +63,12 @@ runs:
     - if: ${{ inputs.lint == 'true' }}
       name: Build fap
       shell: bash
-      run: ufbt lint
+      run: cd $GITHUB_WORKSPACE; ufbt lint
 
     - if: ${{ inputs.lint == 'false' }}
       name: Build fap
       shell: bash
-      run: ufbt
+      run: cd $GITHUB_WORKSPACE; ufbt
 
     - if: ${{ inputs.lint == 'false' }}
       name: Get name
