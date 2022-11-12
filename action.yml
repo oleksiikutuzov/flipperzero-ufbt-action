@@ -20,11 +20,11 @@ runs:
       uses: actions/checkout@v3
       with:
         repository: flipperdevices/flipperzero-ufbt
-        path: /tmp/flipperzero-ufbt
+        path: ${{ runner.temp }}/flipperzero-ufbt
 
     - name: Set path
       shell: bash
-      run: echo "/tmp/flipperzero-ufbt" >> $GITHUB_PATH
+      run: echo "${{ runner.temp }}/flipperzero-ufbt" >> $GITHUB_PATH
 
     - if: ${{ inputs.channel == 'dev' }}
       shell: bash
@@ -52,7 +52,7 @@ runs:
       env:
         cache-name: cache-ufbt
       with:
-        path: /tmp/flipperzero-ufbt/.ufbt/
+        path: ${{ runner.temp }}/flipperzero-ufbt/.ufbt/
         key: ${{ runner.os }}-${{ env.cache-name }}-${{ inputs.channel }}-${{ env.COMMIT_ID }}
         restore-keys: |
           ${{ runner.os }}-${{ env.cache-name }}-${{ inputs.channel }}-${{ env.COMMIT_ID }}
@@ -82,4 +82,4 @@ runs:
       uses: actions/upload-artifact@v3
       with:
         name: ${{ env.ARTIFACT }}
-        path: /tmp/flipperzero-ufbt/.ufbt/build/${{ env.ARTIFACT }}
+        path: ${{ runner.temp }}/flipperzero-ufbt/.ufbt/build/${{ env.ARTIFACT }}
