@@ -79,3 +79,21 @@ jobs:
         lint: true
 ```
 
+# Revision History
+### Version v1.4.0
+- Support for lint command
+
+### Version v1.3.2
+- Do not use external action for jq
+
+### Version v1.3.1
+- Automatically set artifact name to fap name 
+
+### Version v1.3
+- Push artifact after successful bild
+
+### Version v1.2.3
+- Added `channel` input to set SDK channel
+
+### Version v1.0
+- First release
