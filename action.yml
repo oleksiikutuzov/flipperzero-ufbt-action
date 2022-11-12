@@ -21,12 +21,12 @@ runs:
   using: "composite"
   steps:
     - if: ${{ inputs.path == '' }}
-      name: Set fap path
+      name: Set fap path to workspace
       shell: bash
       run: echo "FAP_PATH=$GITHUB_WORKSPACE" >> $GITHUB_ENV
 
     - if: ${{ inputs.path != '' }}
-      name: Set fap path
+      name: Set fap path to fap directory
       shell: bash
       run: echo "FAP_PATH=$GITHUB_WORKSPACE/${{ inputs.path }}" >> $GITHUB_ENV
 
@@ -75,7 +75,7 @@ runs:
       run: ufbt update --channel=${{ inputs.channel }}
 
     - if: ${{ inputs.lint_only == 'true' }}
-      name: Build fap
+      name: Lint fap
       shell: bash
       run: cd ${{ env.FAP_PATH }}; ufbt lint
 
