@@ -8,11 +8,11 @@
 > You should checkout your repository to some directory, so that ufbt is not in your repo root
 > ```
 > ── runner_home
->    ├── fap-dir
+>    ├── path
 >    └── flipperzero-ufbt
 > ```
 
-### `fap-dir` 
+### `path` 
 
 Is **required**. Sets the path to a folder where your fap source code is located.
 
@@ -20,7 +20,7 @@ Is **required**. Sets the path to a folder where your fap source code is located
 
 Is **not required**. Sets a channel, from which SDK should be pulled. Can be `dev`, `rc`, `release`. When not specified, defaults to `dev`.
 
-### `lint` 
+### `lint_only` 
 
 Is **not required**. Will lint your code instead of building. Can be `true` or `false`. When not specified, defaults to `false`.
 
@@ -51,7 +51,7 @@ jobs:
     - name: Build
       uses: oleksiikutuzov/flipperzero-ufbt-action@v1
       with:
-        fap-dir: flipperzero-lightmeter
+        path: flipperzero-lightmeter
         channel: rc
 ```
 
@@ -75,11 +75,14 @@ jobs:
     - name: Lint
       uses: oleksiikutuzov/flipperzero-ufbt-action@v1
       with:
-        fap-dir: flipperzero-lightmeter
-        lint: true
+        path: flipperzero-lightmeter
+        lint_only: true
 ```
 
 # Revision History
+### Version v1.4.1
+- Inputs naming overhaul
+
 ### Version v1.4.0
 - Support for lint command
 
