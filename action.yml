@@ -5,9 +5,6 @@ branding:
   icon: "cpu"
   color: "orange"
 inputs:
-  path:
-    description: "Path to your fap source code (you should checkout your repository to some folder)"
-    required: true
   lint_only:
     description: "Whether you want to build or lint your source code"
     required: false
@@ -23,11 +20,11 @@ runs:
       uses: actions/checkout@v3
       with:
         repository: flipperdevices/flipperzero-ufbt
-        path: flipperzero-ufbt
+        path: /opt/flipperzero-ufbt
 
     - name: Set path
       shell: bash
-      run: echo "$GITHUB_WORKSPACE/flipperzero-ufbt" >> $GITHUB_PATH
+      run: echo "/opt/flipperzero-ufbt" >> $GITHUB_PATH
 
     - if: ${{ inputs.channel == 'dev' }}
       shell: bash
@@ -68,12 +65,12 @@ runs:
     - if: ${{ inputs.lint == 'true' }}
       name: Build fap
       shell: bash
-      run: cd ${{ inputs.fap-dir }}; ufbt lint
+      run: ufbt lint
 
     - if: ${{ inputs.lint == 'false' }}
       name: Build fap
       shell: bash
-      run: cd ${{ inputs.fap-dir }}; ufbt
+      run: ufbt
 
     - if: ${{ inputs.lint == 'false' }}
       name: Get name
@@ -85,4 +82,4 @@ runs:
       uses: actions/upload-artifact@v3
       with:
         name: ${{ env.ARTIFACT }}
-        path: flipperzero-ufbt/.ufbt/build/${{ env.ARTIFACT }}
+        path: /opt/flipperzero-ufbt/.ufbt/build/${{ env.ARTIFACT }}
