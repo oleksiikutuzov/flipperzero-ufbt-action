@@ -5,6 +5,10 @@ branding:
   icon: "cpu"
   color: "orange"
 inputs:
+  path:
+    description: "Path to fap source code (if not in the root of repository)"
+    required: false
+    default: ""
   lint_only:
     description: "Whether you want to build or lint your source code"
     required: false
@@ -16,25 +20,35 @@ inputs:
 runs:
   using: "composite"
   steps:
+    - if: ${{ inputs.path == '' }}
+      name: Set fap path
+      shell: bash
+      run: echo "FAP_PATH=$GITHUB_WORKSPACE" >> $GITHUB_ENV
+
+    - if: ${{ inputs.path != '' }}
+      name: Set fap path
+      shell: bash
+      run: echo "FAP_PATH=$GITHUB_WORKSPACE/${{ inputs.path }}" >> $GITHUB_ENV
+
     - name: Clone ufbt
       shell: bash
       run: git clone https://github.com/flipperdevices/flipperzero-ufbt ${{ runner.temp }}/flipperzero-ufbt
 
-    - name: Set path
+    - name: Set ufbt path
       shell: bash
       run: echo "${{ runner.temp }}/flipperzero-ufbt" >> $GITHUB_PATH
 
     - if: ${{ inputs.channel == 'dev' }}
       shell: bash
-      run: echo "{CHANNEL}={0}" >> $GITHUB_ENV
+      run: echo "CHANNEL=0" >> $GITHUB_ENV
 
     - if: ${{ inputs.channel == 'rc' }}
       shell: bash
-      run: echo "{CHANNEL}={1}" >> $GITHUB_ENV
+      run: echo "CHANNEL=1" >> $GITHUB_ENV
 
     - if: ${{ inputs.channel == 'release' }}
       shell: bash
-      run: echo "{CHANNEL}={2}" >> $GITHUB_ENV
+      run: echo "CHANNEL=2" >> $GITHUB_ENV
 
     - name: Get directory.json
       shell: bash
@@ -63,21 +77,21 @@ runs:
     - if: ${{ inputs.lint_only == 'true' }}
       name: Build fap
       shell: bash
-      run: cd $GITHUB_WORKSPACE; ufbt lint
+      run: cd ${{ env.FAP_PATH }}; ufbt lint
 
     - if: ${{ inputs.lint_only == 'false' }}
       name: Build fap
       shell: bash
-      run: cd $GITHUB_WORKSPACE; ufbt
+      run: cd ${{ env.FAP_PATH }}; ufbt
 
     - if: ${{ inputs.lint_only == 'false' }}
       name: Get name
       shell: bash
-      run: echo "ARTIFACT=$(basename dist/*.fap)" >> $GITHUB_ENV
+      run: echo "ARTIFACT=$(basename ${{ env.FAP_PATH }}/dist/*.fap)" >> $GITHUB_ENV
 
     - if: ${{ inputs.lint_only == 'false' }}
       name: Upload artifact
       uses: actions/upload-artifact@v3
       with:
         name: ${{ env.ARTIFACT }}
-        path: ${{ runner.temp }}/flipperzero-ufbt/.ufbt/build/${{ env.ARTIFACT }}
+        path: ${{ env.FAP_PATH }}/dist/${{ env.ARTIFACT }}
