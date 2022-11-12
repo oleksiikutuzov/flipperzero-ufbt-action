@@ -81,7 +81,7 @@ jobs:
 - Automatically set artifact name to fap name
 
 ### Version v1.3
-- Push artifact after successful bild
+- Push artifact after successful build
 
 ### Version v1.2.3
 - Added `channel` input to set SDK channel
