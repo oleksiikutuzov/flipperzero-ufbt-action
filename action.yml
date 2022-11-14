@@ -23,7 +23,7 @@ runs:
     - name: Set fap path to workspace
       shell: bash
       run: >
-        if [[ -z ${{ inputs.path }} ]]
+        if [ -z ${{ inputs.path }} ]; then
           echo "FAP_PATH=$GITHUB_WORKSPACE" >> $GITHUB_ENV
         else
           echo "FAP_PATH=$GITHUB_WORKSPACE/${{ inputs.path }}" >> $GITHUB_ENV
