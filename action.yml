@@ -20,15 +20,14 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - if: ${{ inputs.path == '' }}
-      name: Set fap path to workspace
+    - name: Set fap path to workspace
       shell: bash
-      run: echo "FAP_PATH=$GITHUB_WORKSPACE" >> $GITHUB_ENV
-
-    - if: ${{ inputs.path != '' }}
-      name: Set fap path to fap directory
-      shell: bash
-      run: echo "FAP_PATH=$GITHUB_WORKSPACE/${{ inputs.path }}" >> $GITHUB_ENV
+      run: >
+        if [ -z ${{ inputs.path }} ]
+          echo "FAP_PATH=$GITHUB_WORKSPACE" >> $GITHUB_ENV
+        else
+          echo "FAP_PATH=$GITHUB_WORKSPACE/${{ inputs.path }}" >> $GITHUB_ENV
+        fi
 
     - name: Clone ufbt
       shell: bash
