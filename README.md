@@ -6,9 +6,9 @@
 
 * Saves ufbt cache for your repository as you run it and automatically updates it as needed. [More about managing caches.](https://docs.github.com/en/actions/using-workflows/caching-dependencies-to-speed-up-workflows#managing-caches)
 
-* Has error matching and shows errors in Annotations section of the Summary. 
+* Has error matching and shows errors in Annotations section of the Summary.
 
-* Uploads artifact after sucessful build.
+* Uploads artifact after successful build.
 
 ## Inputs
 
