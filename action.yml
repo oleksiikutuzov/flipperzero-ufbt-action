@@ -28,34 +28,28 @@ runs:
         else
           echo "FAP_PATH=$GITHUB_WORKSPACE/${{ inputs.path }}" >> $GITHUB_ENV
         fi
+        git clone https://github.com/flipperdevices/flipperzero-ufbt ${{ runner.temp }}/flipperzero-ufbt
+        echo "${{ runner.temp }}/flipperzero-ufbt" >> $GITHUB_PATH
 
-    - name: Clone ufbt
+    - name: Set channel
       shell: bash
-      run: git clone https://github.com/flipperdevices/flipperzero-ufbt ${{ runner.temp }}/flipperzero-ufbt
+      run: >
+        if [ ${{ inputs.channel }} = 'dev' ]; then
+          echo "CHANNEL=0" >> $GITHUB_ENV
+        elif [ ${{ inputs.channel }} = 'rc' ]; then
+          echo "CHANNEL=1" >> $GITHUB_ENV
+        elif [ ${{ inputs.channel }} = 'release' ]; then
+          echo "CHANNEL=2" >> $GITHUB_ENV
+        else
+          echo "::error::Bad channel name!"
+          exit 1
+        fi
 
-    - name: Set ufbt path
+    - name: Get commit id
       shell: bash
-      run: echo "${{ runner.temp }}/flipperzero-ufbt" >> $GITHUB_PATH
-
-    - if: ${{ inputs.channel == 'dev' }}
-      shell: bash
-      run: echo "CHANNEL=0" >> $GITHUB_ENV
-
-    - if: ${{ inputs.channel == 'rc' }}
-      shell: bash
-      run: echo "CHANNEL=1" >> $GITHUB_ENV
-
-    - if: ${{ inputs.channel == 'release' }}
-      shell: bash
-      run: echo "CHANNEL=2" >> $GITHUB_ENV
-
-    - name: Get directory.json
-      shell: bash
-      run: curl -o directory.json https://update.flipperzero.one/firmware/directory.json
-
-    - name: Extract commit id
-      shell: bash
-      run: echo "COMMIT_ID=$(jq -r '.channels[0].versions[0].version' directory.json)" >> $GITHUB_ENV
+      run: >
+        curl -o directory.json https://update.flipperzero.one/firmware/directory.json
+        echo "COMMIT_ID=$(jq -r '.channels[0].versions[0].version' directory.json)" >> $GITHUB_ENV
 
     - name: Cache toolchain
       id: cache-fbt
