@@ -84,7 +84,8 @@ runs:
     #   name: Build Project
     #   run: cd ${{ env.FAP_PATH }}; ufbt
 
-    - uses: ammaraskar/gcc-problem-matcher@master
+    - if: ${{ inputs.lint_only == 'false' }}
+      uses: ammaraskar/gcc-problem-matcher@master
     - name: Build Project
       shell: bash
       run: cd ${{ env.FAP_PATH }}; ufbt
