@@ -73,7 +73,7 @@ runs:
     - name: Execute ufbt
       shell: bash
       run: >
-        if [ -${{ inputs.lint_only }} = 'false' ]; then
+        if [ ${{ inputs.lint_only }} = 'false' ]; then
           echo "::add-matcher::$GITHUB_WORKSPACE/problem_matcher.json";
           cd ${{ env.FAP_PATH }}; ufbt;
           echo "ARTIFACT=$(basename ${{ env.FAP_PATH }}/dist/*.fap)" >> $GITHUB_ENV;
