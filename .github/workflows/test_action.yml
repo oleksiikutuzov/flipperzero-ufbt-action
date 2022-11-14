@@ -18,7 +18,7 @@ jobs:
         uses: oleksiikutuzov/flipperzero-ufbt-action@oleksiikutuzov-patch-1
         with:
           path: test
-          channel: rc
+          channel: undev
 
   lint_dev:
     runs-on: ubuntu-latest
@@ -31,4 +31,4 @@ jobs:
         uses: oleksiikutuzov/flipperzero-ufbt-action@oleksiikutuzov-patch-1
         with:
           path: test
-          lint_only: true
+          lint_only: no
