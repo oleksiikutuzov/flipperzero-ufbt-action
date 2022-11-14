@@ -79,9 +79,13 @@ runs:
       shell: bash
       run: cd ${{ env.FAP_PATH }}; ufbt lint
 
-    - if: ${{ inputs.lint_only == 'false' }}
-      uses: ammaraskar/gcc-problem-matcher@master
-      name: Build Project
+    # - if: ${{ inputs.lint_only == 'false' }}
+    #   uses: ammaraskar/gcc-problem-matcher@master
+    #   name: Build Project
+    #   run: cd ${{ env.FAP_PATH }}; ufbt
+
+    - uses: ammaraskar/gcc-problem-matcher@master
+    - name: Build Project
       run: cd ${{ env.FAP_PATH }}; ufbt
 
     # - if: ${{ inputs.lint_only == 'false' }}
