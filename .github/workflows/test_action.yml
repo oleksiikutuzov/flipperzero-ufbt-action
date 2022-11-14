@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - oleksiikutuzov-patch-1
 
 jobs:
   build_rc:
@@ -14,7 +15,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Build test fap
-        uses: oleksiikutuzov/flipperzero-ufbt-action@main
+        uses: oleksiikutuzov/flipperzero-ufbt-action@oleksiikutuzov-patch-1
         with:
           path: test
           channel: rc
@@ -27,7 +28,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Build test fap
-        uses: oleksiikutuzov/flipperzero-ufbt-action@main
+        uses: oleksiikutuzov/flipperzero-ufbt-action@oleksiikutuzov-patch-1
         with:
           path: test
           lint_only: true
