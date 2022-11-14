@@ -95,3 +95,7 @@ runs:
       with:
         name: ${{ env.ARTIFACT }}
         path: ${{ env.FAP_PATH }}/dist/${{ env.ARTIFACT }}
+
+    - name: Test workflow commands
+      shell: bash
+      run: echo "::error file=app.js,line=1,col=5,endColumn=7::Missing semicolon"
