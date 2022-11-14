@@ -2,8 +2,6 @@ name: Test action
 
 on:
   push:
-    branches:
-      - main
 
 jobs:
   build_rc:
