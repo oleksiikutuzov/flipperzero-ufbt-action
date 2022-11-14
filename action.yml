@@ -75,10 +75,6 @@ runs:
       run: ufbt update --channel=${{ inputs.channel }}
 
     - if: ${{ inputs.lint_only == 'true' }}
-      name: Add clang-cl problem matcher
-      uses: equeim/clang-cl-problem-matcher@v1
-
-    - if: ${{ inputs.lint_only == 'true' }}
       name: Lint fap
       shell: bash
       run: echo "::add-matcher::$GITHUB_WORKSPACE/clang_matcher.json"; cd ${{ env.FAP_PATH }}; ufbt lint
