@@ -69,6 +69,9 @@ jobs:
 ```
 
 # Revision History
+### Version v1.5.1
+- Refactor action
+
 ### Version v1.5.0
 - Add problem matcher
 
