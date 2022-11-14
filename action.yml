@@ -98,4 +98,4 @@ runs:
 
     - name: Test workflow commands
       shell: bash
-      run: echo "::error file=test_fap.c,line=6,col=40,endColumn=41::Missing semicolon"
+      run: echo "::error file=test_fap.c,line=6,col=38,endColumn=39::Missing semicolon"
