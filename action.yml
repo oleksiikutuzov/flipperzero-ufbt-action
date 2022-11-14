@@ -75,25 +75,19 @@ runs:
       run: ufbt update --channel=${{ inputs.channel }}
 
     - if: ${{ inputs.lint_only == 'true' }}
+      name: Add clang-cl problem matcher
+      uses: equeim/clang-cl-problem-matcher@v1
+
+    - if: ${{ inputs.lint_only == 'true' }}
       name: Lint fap
       shell: bash
       run: cd ${{ env.FAP_PATH }}; ufbt lint
-
-    # - if: ${{ inputs.lint_only == 'false' }}
-    #   uses: ammaraskar/gcc-problem-matcher@master
-    #   name: Build Project
-    #   run: cd ${{ env.FAP_PATH }}; ufbt
 
     - if: ${{ inputs.lint_only == 'false' }}
       uses: ammaraskar/gcc-problem-matcher@master
     - name: Build Project
       shell: bash
       run: cd ${{ env.FAP_PATH }}; ufbt
-
-    # - if: ${{ inputs.lint_only == 'false' }}
-    #   name: Build fap
-    #   shell: bash
-    #   run: cd ${{ env.FAP_PATH }}; ufbt
 
     - if: ${{ inputs.lint_only == 'false' }}
       name: Get name
@@ -106,7 +100,3 @@ runs:
       with:
         name: ${{ env.ARTIFACT }}
         path: ${{ env.FAP_PATH }}/dist/${{ env.ARTIFACT }}
-
-    - name: Test workflow commands
-      shell: bash
-      run: echo "::error file=test_fap.c,line=6,col=38,endColumn=39::Missing semicolon"
