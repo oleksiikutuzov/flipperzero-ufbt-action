@@ -45,7 +45,7 @@ runs:
         elif [ ${{ inputs.channel }} = 'release' ]; then
           echo "CHANNEL=2" >> $GITHUB_ENV
         else
-          echo "::error::Bad channel name!"
+          echo "::error::channel: Bad input!"
           exit 1
         fi
 
@@ -74,15 +74,18 @@ runs:
     - name: Execute ufbt
       shell: bash
       run: >
-        if [ ${{ inputs.lint_only }} ]; then
+        if [ -z ${{ inputs.lint_only }} ]; then
           echo "::add-matcher::$GITHUB_WORKSPACE/problem_matcher.json";
           cd ${{ env.FAP_PATH }};
           ufbt;
           echo "ARTIFACT=$(basename ${{ env.FAP_PATH }}/dist/*.fap)" >> $GITHUB_ENV;
-        else
+        elif [ ${{ inputs.lint_only }} = 'true' ]
           echo "::add-matcher::$GITHUB_WORKSPACE/problem_matcher.json";
           cd ${{ env.FAP_PATH }};
           ufbt lint
+        else
+          echo "::error::lint_only: Bad input!"
+          exit 1
         fi
 
     - if: ${{ inputs.lint_only == 'false' }}
