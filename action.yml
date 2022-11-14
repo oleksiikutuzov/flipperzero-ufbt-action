@@ -79,7 +79,7 @@ runs:
           cd ${{ env.FAP_PATH }};
           ufbt;
           echo "ARTIFACT=$(basename ${{ env.FAP_PATH }}/dist/*.fap)" >> $GITHUB_ENV;
-        elif [ ${{ inputs.lint_only }} = 'true' ]
+        elif [ ${{ inputs.lint_only }} = 'true' ]; then
           echo "::add-matcher::$GITHUB_WORKSPACE/problem_matcher.json";
           cd ${{ env.FAP_PATH }};
           ufbt lint
