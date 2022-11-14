@@ -10,9 +10,9 @@ inputs:
     required: false
     default: ""
   lint_only:
-    description: "Whether you want to build or lint your source code"
+    description: "Whether you want to only lint your source code"
     required: false
-    default: ""
+    default: "false"
   channel:
     description: "SDK channel to use"
     required: false
@@ -73,7 +73,7 @@ runs:
     - name: Execute ufbt
       shell: bash
       run: >
-        if [ -z ${{ inputs.lint_only }} ]; then
+        if [ -${{ inputs.lint_only }} = 'false' ]; then
           echo "::add-matcher::$GITHUB_WORKSPACE/problem_matcher.json";
           cd ${{ env.FAP_PATH }}; ufbt;
           echo "ARTIFACT=$(basename ${{ env.FAP_PATH }}/dist/*.fap)" >> $GITHUB_ENV;
