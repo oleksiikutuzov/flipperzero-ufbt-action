@@ -20,7 +20,7 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Set fap path to workspace
+    - name: Set fap path
       shell: bash
       run: >
         if [ -z ${{ inputs.path }} ]; then
@@ -28,6 +28,10 @@ runs:
         else
           echo "FAP_PATH=$GITHUB_WORKSPACE/${{ inputs.path }}" >> $GITHUB_ENV
         fi
+
+    - name: Get ufbt
+      shell: bash
+      run: >
         git clone https://github.com/flipperdevices/flipperzero-ufbt ${{ runner.temp }}/flipperzero-ufbt
         echo "${{ runner.temp }}/flipperzero-ufbt" >> $GITHUB_PATH
 
