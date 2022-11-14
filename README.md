@@ -2,6 +2,14 @@
 
 [![Test action](https://github.com/oleksiikutuzov/flipperzero-ufbt-action/actions/workflows/test_action.yml/badge.svg?branch=main)](https://github.com/oleksiikutuzov/flipperzero-ufbt-action/actions/workflows/test_action.yml)
 
+## Features
+
+* Saves ufbt cache for your repository as you run it and automatically updates it as needed. [More about managing caches.](https://docs.github.com/en/actions/using-workflows/caching-dependencies-to-speed-up-workflows#managing-caches)
+
+* Has error matching and shows errors in Annotations section of the Summary.
+
+* Uploads artifact after successful build.
+
 ## Inputs
 
 ### `path`
@@ -15,10 +23,6 @@ Is **not required**. Sets a channel, from which SDK should be pulled. Can be `de
 ### `lint_only`
 
 Is **not required**. Will only lint your code without building. Can be `true` or `false`. When not specified, defaults to `false`.
-
-## Caching
-
-This workflow will save ufbt cache for your repository as you run it and automatically update it as needed. [More about managing caches](https://docs.github.com/en/actions/using-workflows/caching-dependencies-to-speed-up-workflows#managing-caches)
 
 ## Usage examples
 

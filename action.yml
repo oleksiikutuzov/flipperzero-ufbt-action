@@ -10,7 +10,7 @@ inputs:
     required: false
     default: ""
   lint_only:
-    description: "Whether you want to build or lint your source code"
+    description: "Whether you want to only lint your source code"
     required: false
     default: "false"
   channel:
@@ -20,43 +20,39 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - if: ${{ inputs.path == '' }}
-      name: Set fap path to workspace
+    - name: Set fap source path
       shell: bash
-      run: echo "FAP_PATH=$GITHUB_WORKSPACE" >> $GITHUB_ENV
+      run: >
+        if [ -z ${{ inputs.path }} ]; then
+          echo "FAP_PATH=$GITHUB_WORKSPACE" >> $GITHUB_ENV
+        else
+          echo "FAP_PATH=$GITHUB_WORKSPACE/${{ inputs.path }}" >> $GITHUB_ENV
+        fi
 
-    - if: ${{ inputs.path != '' }}
-      name: Set fap path to fap directory
+    - name: Get ufbt
       shell: bash
-      run: echo "FAP_PATH=$GITHUB_WORKSPACE/${{ inputs.path }}" >> $GITHUB_ENV
+      run: >
+        git clone https://github.com/flipperdevices/flipperzero-ufbt ${{ runner.temp }}/flipperzero-ufbt;
+        echo "${{ runner.temp }}/flipperzero-ufbt" >> $GITHUB_PATH
 
-    - name: Clone ufbt
+    - name: Set channel
       shell: bash
-      run: git clone https://github.com/flipperdevices/flipperzero-ufbt ${{ runner.temp }}/flipperzero-ufbt
+      run: >
+        if [ ${{ inputs.channel }} = 'dev' ]; then
+          echo "CHANNEL=0" >> $GITHUB_ENV
+        elif [ ${{ inputs.channel }} = 'rc' ]; then
+          echo "CHANNEL=1" >> $GITHUB_ENV
+        elif [ ${{ inputs.channel }} = 'release' ]; then
+          echo "CHANNEL=2" >> $GITHUB_ENV
+        else
+          echo "::error::channel: Bad input!"; exit 1
+        fi
 
-    - name: Set ufbt path
+    - name: Get commit id
       shell: bash
-      run: echo "${{ runner.temp }}/flipperzero-ufbt" >> $GITHUB_PATH
-
-    - if: ${{ inputs.channel == 'dev' }}
-      shell: bash
-      run: echo "CHANNEL=0" >> $GITHUB_ENV
-
-    - if: ${{ inputs.channel == 'rc' }}
-      shell: bash
-      run: echo "CHANNEL=1" >> $GITHUB_ENV
-
-    - if: ${{ inputs.channel == 'release' }}
-      shell: bash
-      run: echo "CHANNEL=2" >> $GITHUB_ENV
-
-    - name: Get directory.json
-      shell: bash
-      run: curl -o directory.json https://update.flipperzero.one/firmware/directory.json
-
-    - name: Extract commit id
-      shell: bash
-      run: echo "COMMIT_ID=$(jq -r '.channels[0].versions[0].version' directory.json)" >> $GITHUB_ENV
+      run: >
+        curl -o directory.json https://update.flipperzero.one/firmware/directory.json;
+        echo "COMMIT_ID=$(jq -r '.channels[0].versions[0].version' directory.json)" >> $GITHUB_ENV
 
     - name: Cache toolchain
       id: cache-fbt
@@ -70,24 +66,23 @@ runs:
           ${{ runner.os }}-${{ env.cache-name }}-${{ inputs.channel }}-${{ env.COMMIT_ID }}
 
     - if: ${{ steps.cache-fbt.outputs.cache-hit != 'true' }}
-      name: Update fbt
+      name: Update ufbt if cache not found
       shell: bash
       run: ufbt update --channel=${{ inputs.channel }}
 
-    - if: ${{ inputs.lint_only == 'true' }}
-      name: Lint fap
+    - name: Execute ufbt
       shell: bash
-      run: echo "::add-matcher::$GITHUB_WORKSPACE/problem_matcher.json"; cd ${{ env.FAP_PATH }}; ufbt lint
-
-    - if: ${{ inputs.lint_only == 'false' }}
-      name: Build Project
-      shell: bash
-      run: echo "::add-matcher::$GITHUB_WORKSPACE/problem_matcher.json"; cd ${{ env.FAP_PATH }}; ufbt
-
-    - if: ${{ inputs.lint_only == 'false' }}
-      name: Get name
-      shell: bash
-      run: echo "ARTIFACT=$(basename ${{ env.FAP_PATH }}/dist/*.fap)" >> $GITHUB_ENV
+      run: >
+        if [ ${{ inputs.lint_only }} = 'false' ]; then
+          echo "::add-matcher::$GITHUB_WORKSPACE/problem_matcher.json";
+          cd ${{ env.FAP_PATH }}; ufbt;
+          echo "ARTIFACT=$(basename ${{ env.FAP_PATH }}/dist/*.fap)" >> $GITHUB_ENV;
+        elif [ ${{ inputs.lint_only }} = 'true' ]; then
+          echo "::add-matcher::$GITHUB_WORKSPACE/problem_matcher.json";
+          cd ${{ env.FAP_PATH }}; ufbt lint
+        else
+          echo "::error::lint_only: Bad input!"; exit 1
+        fi
 
     - if: ${{ inputs.lint_only == 'false' }}
       name: Upload artifact
