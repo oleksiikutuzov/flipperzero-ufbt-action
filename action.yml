@@ -86,7 +86,7 @@ runs:
     - if: ${{ inputs.lint_only == 'false' }}
       name: Build Project
       shell: bash
-      run: echo "::add-matcher::${{ env.FAP_PATH }}/gcc_matcher.json"; cd ${{ env.FAP_PATH }}; ufbt
+      run: echo "::add-matcher::$GITHUB_WORKSPACE/gcc_matcher.json"; cd ${{ env.FAP_PATH }}; ufbt
 
     - if: ${{ inputs.lint_only == 'false' }}
       name: Get name
