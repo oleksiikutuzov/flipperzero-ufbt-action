@@ -81,7 +81,7 @@ runs:
     - if: ${{ inputs.lint_only == 'true' }}
       name: Lint fap
       shell: bash
-      run: cd ${{ env.FAP_PATH }}; ufbt lint
+      run: echo "::add-matcher::$GITHUB_WORKSPACE/clang_matcher.json"; cd ${{ env.FAP_PATH }}; ufbt lint
 
     - if: ${{ inputs.lint_only == 'false' }}
       name: Build Project
