@@ -69,6 +69,10 @@ runs:
       name: Update ufbt if cache not found
       shell: bash
       run: ufbt update --channel=${{ inputs.channel }}
+      
+    - name: Download problem_matcher.json
+      shell: bash
+      run: curl -o problem_matcher.json https://raw.githubusercontent.com/oleksiikutuzov/flipperzero-ufbt-action/main/problem_matcher.json
 
     - name: Execute ufbt
       shell: bash
