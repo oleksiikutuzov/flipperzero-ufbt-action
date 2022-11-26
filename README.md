@@ -31,7 +31,8 @@ Example of a workflow, that will pull SDK from `rc` channel and build your fap:
 ```yml
 name: Build FAP
 
-on: [push]
+on:
+  push:
 
 jobs:
   build:
@@ -51,7 +52,8 @@ Example of a workflow, that will pull SDK from default `dev` channel and lint yo
 ```yml
 name: Lint code
 
-on: [push]
+on:
+  push:
 
 jobs:
    lint:
