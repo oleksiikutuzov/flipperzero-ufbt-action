@@ -32,7 +32,7 @@ runs:
     - name: Get ufbt
       shell: bash
       run: >
-        git clone https://github.com/flipperdevices/flipperzero-ufbt ${{ runner.temp }}/flipperzero-ufbt;
+        git clone --depth 1 --branch v0.1.0 https://github.com/flipperdevices/flipperzero-ufbt ${{ runner.temp }}/flipperzero-ufbt;
         echo "${{ runner.temp }}/flipperzero-ufbt" >> $GITHUB_PATH
 
     - name: Set channel
@@ -69,7 +69,7 @@ runs:
       name: Update ufbt if cache not found
       shell: bash
       run: ufbt update --channel=${{ inputs.channel }}
-      
+
     - name: Download problem_matcher.json
       shell: bash
       run: curl -o problem_matcher.json https://raw.githubusercontent.com/oleksiikutuzov/flipperzero-ufbt-action/main/problem_matcher.json
@@ -87,6 +87,10 @@ runs:
         else
           echo "::error::lint_only: Bad input!"; exit 1
         fi
+        echo "::notice::ubft architecture was updated and is incompatible with older versions. \
+          Thus, tag v1 of this action will no longer be updated. \
+          It's recommended to update your workflows to use tag v2 to use the \
+          most actual version of ufbt with updated architecture"
 
     - if: ${{ inputs.lint_only == 'false' }}
       name: Upload artifact
