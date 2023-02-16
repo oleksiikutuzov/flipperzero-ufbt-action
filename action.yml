@@ -87,10 +87,10 @@ runs:
         else
           echo "::error::lint_only: Bad input!"; exit 1
         fi;
-        echo "::notice::The SDK structure is going to be updated soon (expectedly around 0.78 release)
+        echo "::warning::The SDK structure is going to be updated soon (expectedly around 0.78 release)
         and new version of ufbt will no longer be compatible with older firmware versions.
         Thus, tag v1 of this action will no longer be updated. It's recommended to update
-        your workflows to use tag v2 to use the most actual version of ufbt"
+        your workflows to use tag v2 for the most actual version of ufbt"
 
     - if: ${{ inputs.lint_only == 'false' }}
       name: Upload artifact
