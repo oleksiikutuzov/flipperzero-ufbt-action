@@ -88,6 +88,7 @@ runs:
           echo "::error::lint_only: Bad input!"; exit 1
         fi
 
+
     - if: ${{ inputs.lint_only == 'false' }}
       name: Upload artifact
       uses: actions/upload-artifact@v3
