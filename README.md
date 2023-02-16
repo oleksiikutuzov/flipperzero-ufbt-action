@@ -2,6 +2,12 @@
 
 [![Test action](https://github.com/oleksiikutuzov/flipperzero-ufbt-action/actions/workflows/test_action.yml/badge.svg?branch=main)](https://github.com/oleksiikutuzov/flipperzero-ufbt-action/actions/workflows/test_action.yml)
 
+> **note**
+> The SDK structure is going to be updated soon (expectedly around 0.78 release)
+> and new version of ufbt will no longer be compatible with older firmware versions.
+> Thus, tag v1 of this action will no longer be updated. It's recommended to update
+> your workflows to use tag v2 to use the most actual version of ufbt
+
 ## Features
 
 * Saves ufbt cache for your repository as you run it and automatically updates it as needed. [More about managing caches.](https://docs.github.com/en/actions/using-workflows/caching-dependencies-to-speed-up-workflows#managing-caches)
