@@ -32,7 +32,7 @@ runs:
     - name: Get ufbt
       shell: bash
       run: >
-        git clone --depth 1 --branch v0.1.0 https://github.com/flipperdevices/flipperzero-ufbt ${{ runner.temp }}/flipperzero-ufbt;
+        git clone --depth 1 --branch dev https://github.com/flipperdevices/flipperzero-ufbt ${{ runner.temp }}/flipperzero-ufbt;
         echo "${{ runner.temp }}/flipperzero-ufbt" >> $GITHUB_PATH
 
     - name: Set channel
@@ -86,11 +86,7 @@ runs:
           cd ${{ env.FAP_PATH }}; ufbt lint
         else
           echo "::error::lint_only: Bad input!"; exit 1
-        fi;
-        echo "::notice::The SDK structure is going to be updated soon (expectedly around 0.78 release)
-        and new version of ufbt will no longer be compatible with older firmware versions.
-        Thus, tag v1 of this action will no longer be updated. It's recommended to update
-        your workflows to use tag v2 to use the most actual version of ufbt"
+        fi
 
     - if: ${{ inputs.lint_only == 'false' }}
       name: Upload artifact
