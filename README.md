@@ -2,7 +2,7 @@
 
 [![Test action](https://github.com/oleksiikutuzov/flipperzero-ufbt-action/actions/workflows/test_action.yml/badge.svg?branch=main)](https://github.com/oleksiikutuzov/flipperzero-ufbt-action/actions/workflows/test_action.yml)
 
-> **note**
+> **Note**
 > The SDK structure is going to be updated soon (expectedly around 0.78 release)
 > and new version of ufbt will no longer be compatible with older firmware versions.
 > Thus, tag v1 of this action will no longer be updated. It's recommended to update
@@ -49,7 +49,7 @@ jobs:
       uses: actions/checkout@v3
 
     - name: Build
-      uses: oleksiikutuzov/flipperzero-ufbt-action@v1
+      uses: oleksiikutuzov/flipperzero-ufbt-action@v2
       with:
         channel: rc
 ```
@@ -70,13 +70,16 @@ jobs:
       uses: actions/checkout@v3
 
     - name: Lint
-      uses: oleksiikutuzov/flipperzero-ufbt-action@v1
+      uses: oleksiikutuzov/flipperzero-ufbt-action@v2
       with:
         path: lightmeter-fap
         lint_only: true
 ```
 
 # Revision History
+### Version v2
+ - Preparation to ufbt changes
+ 
 ### Version v1.5.1
 - Refactor action
 
