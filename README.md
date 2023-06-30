@@ -1,12 +1,7 @@
-# flipperzero-ufbt-action
+# flipperzero-ufbt-action (deprecated)
 
-[![Test action](https://github.com/oleksiikutuzov/flipperzero-ufbt-action/actions/workflows/test_action.yml/badge.svg?branch=main)](https://github.com/oleksiikutuzov/flipperzero-ufbt-action/actions/workflows/test_action.yml)
-
-> **Note**
-> The SDK structure is going to be updated soon (expectedly around 0.78 release)
-> and new version of ufbt will no longer be compatible with older firmware versions.
-> Thus, tag v1 of this action will no longer be updated. It's recommended to update
-> your workflows to use tag v2 to use the most actual version of ufbt
+> **Warning** 
+> Project will no longer be maintained! Please use an official github action https://github.com/flipperdevices/flipperzero-ufbt-action
 
 ## Features
 
